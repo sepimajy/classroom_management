@@ -1,0 +1,31 @@
+<!-- main/templates/main/classrooms/create_exam_step3.html -->
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Create Exam - Step 3{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <h2>Create New Exam - Step 3: Enter Questions</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Question {{ forloop.counter }}
+                    </div>
+                    <div class="card-body">
+                        {{ form|crispy }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="mt-3 d-flex justify-content-between">
+                <button type="submit" name="back" class="btn btn-secondary">Back</button>
+                <button type="submit" name="submit" class="btn btn-success">Create Exam</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+<!-- main/templates/main/classrooms/classroom_detail_student.html -->
+
+{% extends 'main/base.html' %}
+{% block title %}{{ classroom.name }} - Student{% endblock %}
+
+{% block content %}
+<h2>{{ classroom.name }}</h2>
+<p>{{ classroom.description }}</p>
+
+<!-- Tabs for Assignments, Exams, Messages -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="assignments-tab" data-bs-toggle="tab" data-bs-target="#assignments" type="button" role="tab" aria-controls="assignments" aria-selected="true">Assignments</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="exams-tab" data-bs-toggle="tab" data-bs-target="#exams" type="button" role="tab" aria-controls="exams" aria-selected="false">Exams</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Messages</button>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <!-- Assignments Tab -->
+    <div class="tab-pane fade show active" id="assignments" role="tabpanel" aria-labelledby="assignments-tab">
+        <h4 class="mt-3">Assignments</h4>
+        {% if assignments %}
+            <div class="list-group mt-3">
+                {% for assignment in assignments %}
+                    <a href="{% url 'assignment_detail' classroom.pk assignment.pk %}" class="list-group-item list-group-item-action">
+                        <h5 class="mb-1">{{ assignment.title }}</h5>
+                        <p class="mb-1">{{ assignment.description }}</p>
+                        <small>Due: {{ assignment.due_date|date:"M d, Y H:i" }}</small>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="mt-3">No assignments available.</p>
+        {% endif %}
+    </div>
+    
+    <!-- Exams Tab -->
+    <div class="tab-pane fade" id="exams" role="tabpanel" aria-labelledby="exams-tab">
+        <h4 class="mt-3">Exams</h4>
+        {% if exams %}
+            <div class="list-group mt-3">
+                {% for exam in exams %}
+                    <a href="{% url 'exam_detail' classroom.pk exam.pk %}" class="list-group-item list-group-item-action">
+                        <h5 class="mb-1">{{ exam.title }}</h5>
+                        <p class="mb-1">{{ exam.description }}</p>
+                        <small>Start: {{ exam.start_time|date:"M d, Y H:i" }} | End: {{ exam.end_time|date:"M d, Y H:i" }}</small>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="mt-3">No exams available.</p>
+        {% endif %}
+    </div>
+    
+    <!-- Messages Tab -->
+    <div class="tab-pane fade" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <h4>Messages</h4>
+            <a href="{% url 'send_message' classroom.pk %}" class="btn btn-primary">Send Message</a>
+        </div>
+        {% if messages_in_classroom %}
+            <div class="list-group mt-3">
+                {% for message in messages_in_classroom %}
+                    <a href="{% url 'message_detail' message.pk %}" class="list-group-item list-group-item-action">
+                        <h5 class="mb-1">{{ message.sender.username }}</h5>
+                        <p class="mb-1">{{ message.content|truncatechars:100 }}</p>
+                        <small>Sent: {{ message.created_at|date:"M d, Y H:i" }}</small>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="mt-3">No messages in this classroom.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

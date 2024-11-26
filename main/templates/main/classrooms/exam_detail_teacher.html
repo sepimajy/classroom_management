@@ -1,0 +1,77 @@
+<!-- main/templates/main/classrooms/exam_detail_teacher.html -->
+
+{% extends 'main/base.html' %}
+{% block title %}{{ exam.title }} - Submissions{% endblock %}
+{% load crispy_forms_tags get_item %}
+{% block content %}
+<h2>{{ exam.title }} - Submissions</h2>
+<p>{{ exam.description }}</p>
+<p><strong>Start Time:</strong> {{ exam.start_time|date:"M d, Y H:i" }}</p>
+<p><strong>End Time:</strong> {{ exam.end_time|date:"M d, Y H:i" }}</p>
+<p><strong>Duration:</strong> {{ exam.duration }}</p>
+
+{% if submissions %}
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Submitted At</th>
+                <th>Score</th>
+                <th>Feedback</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission in submissions %}
+            <tr>
+                <td>{{ submission.student.username }}</td>
+                <td>{{ submission.submitted_at|date:"M d, Y H:i" }}</td>
+                <td>
+                    {% if submission.score %}
+                        {{ submission.score }}/100
+                    {% else %}
+                        <a href="{% url 'grade_exam_submission' classroom.pk exam.pk submission.pk %}" class="btn btn-sm btn-primary">Grade</a>
+                    {% endif %}
+                </td>
+                <td>{{ submission.feedback|default:"N/A" }}</td>
+                <td>
+                    {% if submission.answers %}
+                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewAnswersModal{{ submission.pk }}">View Answers</a>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="viewAnswersModal{{ submission.pk }}" tabindex="-1" aria-labelledby="viewAnswersModalLabel{{ submission.pk }}" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="viewAnswersModalLabel{{ submission.pk }}">{{ submission.student.username }}'s Answers</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <ul class="list-group">
+                                    {% for question in exam.questions.all %}
+                                        <li class="list-group-item">
+                                            <strong>Question {{ forloop.counter }}:</strong> {{ question.text }}
+                                            <br>
+                                            <strong>Your Answer:</strong> {{ submission.answers|get_item:question.pk }}
+                                            <br>
+                                            <strong>Correct Answer:</strong> {{ question.get_correct_option_display }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="mt-4">No submissions yet.</p>
+{% endif %}
+{% endblock %}

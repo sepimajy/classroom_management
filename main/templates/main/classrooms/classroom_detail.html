@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ classroom.name }} - Exam Management{% endblock %}
+
+{% block content %}
+    <h2>{{ classroom.name }}</h2>
+    <p>{{ classroom.description }}</p>
+    <p>Created by: {{ classroom.created_by.username }} on {{ classroom.created_at|date:"M d, Y" }}</p>
+    
+    <hr>
+    
+    <h3>Assignments</h3>
+    {% if user.profile.role == 'teacher' %}
+        <a href="{% url 'create_assignment' classroom.pk %}" class="btn btn-success mb-3">Create New Assignment</a>
+    {% endif %}
+    <ul class="list-group mb-4">
+        {% for assignment in assignments %}
+            <li class="list-group-item">
+                <a href="{% url 'assignment_detail' classroom.pk assignment.pk %}">{{ assignment.title }}</a>
+                <span class="badge bg-secondary float-end">{{ assignment.due_date|date:"M d, Y H:i" }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No assignments available.</li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Exams</h3>
+    {% if user.profile.role == 'teacher' %}
+        <a href="{% url 'create_exam' classroom.pk %}" class="btn btn-success mb-3">Create New Exam</a>
+    {% endif %}
+    <ul class="list-group mb-4">
+        {% for exam in exams %}
+            <li class="list-group-item">
+                <a href="{% url 'exam_detail' classroom.pk exam.pk %}">{{ exam.title }}</a>
+                <span class="badge bg-secondary float-end">{{ exam.start_time|date:"M d, Y H:i" }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No exams available.</li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Messages</h3>
+    <a href="{% url 'send_message' classroom.pk %}" class="btn btn-primary mb-3">Send Message</a>
+    <ul class="list-group">
+        {% for message in messages_in_classroom %}
+            <li class="list-group-item">
+                <strong>{{ message.sender.username }}</strong> says: {{ message.content|truncatewords:10 }}
+                <span class="badge bg-secondary float-end">{{ message.created_at|date:"M d, Y H:i" }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No messages in this classroom.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

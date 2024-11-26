@@ -1,0 +1,32 @@
+<!-- main/templates/main/classrooms/assignment_detail.html -->
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{ assignment.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ assignment.title }}</h2>
+<p>{{ assignment.description }}</p>
+<p><strong>Due Date:</strong> {{ assignment.due_date|date:"M d, Y H:i" }}</p>
+<p><strong>Allow Late Submissions:</strong> {{ assignment.allow_late_submission|yesno:"Yes,No" }}</p>
+
+{% if can_submit %}
+    <h4 class="mt-4">Submit Assignment</h4>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success mt-3">Submit</button>
+    </form>
+{% elif submission %}
+    <h4 class="mt-4">Your Submission</h4>
+    <p><strong>Submitted At:</strong> {{ submission.submitted_at|date:"M d, Y H:i" }}</p>
+    {% if submission.file %}
+        <p><a href="{{ submission.file.url }}" target="_blank">Download Submission</a></p>
+    {% endif %}
+    {% if submission.is_late %}
+        <p><span class="badge bg-warning text-dark">Late Submission</span></p>
+    {% endif %}
+{% else %}
+    <p class="mt-4">The deadline has passed. You cannot submit this assignment.</p>
+{% endif %}
+{% endblock %}

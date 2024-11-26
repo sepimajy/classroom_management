@@ -1,0 +1,14 @@
+<!-- main/templates/main/message_detail.html -->
+
+{% extends 'main/base.html' %}
+{% block title %}Message from {{ message.sender.username }}{% endblock %}
+
+{% block content %}
+<h2>Message from {{ message.sender.username }}</h2>
+<p><strong>Sent:</strong> {{ message.created_at|date:"M d, Y H:i" }}</p>
+<p>{{ message.content }}</p>
+{% if message.file %}
+    <p><a href="{{ message.file.url }}" target="_blank">Download Attachment</a></p>
+{% endif %}
+<a href="{% url 'inbox' %}" class="btn btn-secondary mt-3">Back to Inbox</a>
+{% endblock %}

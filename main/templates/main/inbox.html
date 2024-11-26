@@ -1,0 +1,21 @@
+<!-- main/templates/main/inbox.html -->
+
+{% extends 'main/base.html' %}
+{% block title %}Inbox{% endblock %}
+
+{% block content %}
+<h2>Inbox</h2>
+{% if messages_received %}
+    <div class="list-group mt-3">
+        {% for message in messages_received %}
+            <a href="{% url 'message_detail' message.pk %}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">{{ message.sender.username }}:</h5>
+                <p class="mb-1">{{ message.content|truncatechars:100 }}</p>
+                <small>Sent: {{ message.created_at|date:"M d, Y H:i" }}</small>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="mt-3">You have no messages.</p>
+{% endif %}
+{% endblock %}

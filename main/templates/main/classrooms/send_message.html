@@ -1,0 +1,19 @@
+<!-- main/templates/main/classrooms/send_message.html -->
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Send Message{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2>Send Message in "{{ classroom.name }}"</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary mt-3">Send Message</button>
+            <a href="{% url 'classroom_detail' classroom.pk %}" class="btn btn-secondary mt-3">Back to Classroom</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

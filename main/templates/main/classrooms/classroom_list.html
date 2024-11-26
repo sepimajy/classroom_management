@@ -1,0 +1,21 @@
+<!-- main/templates/main/classrooms/classroom_list.html -->
+
+{% extends 'main/base.html' %}
+{% block title %}Classroom List{% endblock %}
+
+{% block content %}
+<h2>All Classrooms</h2>
+{% if classrooms %}
+    <div class="list-group">
+        {% for classroom in classrooms %}
+            <a href="{% url 'classroom_detail' classroom.pk %}" class="list-group-item list-group-item-action">
+                <h5 class="mb-1">{{ classroom.name }}</h5>
+                <p class="mb-1">{{ classroom.description }}</p>
+                <small>Teacher: {{ classroom.created_by.username }}</small>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No classrooms available. <a href="{% url 'create_classroom' %}">Create one now!</a></p>
+{% endif %}
+{% endblock %}

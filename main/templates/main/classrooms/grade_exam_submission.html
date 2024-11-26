@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Grade Submission - Exam Management{% endblock %}
+
+{% block content %}
+    <h2>Grade Submission by {{ submission.student.username }}</h2>
+    <p>Exam: {{ exam.title }}</p>
+    <p>Submitted at: {{ submission.submitted_at|date:"M d, Y H:i" }}</p>
+    
+    <h3>Answers</h3>
+    <ul class="list-group mb-3">
+        {% for q_id, answer in submission.answers.items %}
+            {% with question=exam.questions.get(pk=q_id) %}
+                <li class="list-group-item">
+                    <strong>{{ forloop.counter }}. {{ question.text }}</strong><br>
+                    <strong>Your Answer:</strong> {{ answer }}<br>
+                    <strong>Correct Answer:</strong> {{ question.correct_option }}
+                </li>
+            {% endwith %}
+        {% endfor %}
+    </ul>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="score" class="form-label">Score (0-100)</label>
+            <input type="number" name="score" id="score" class="form-control" min="0" max="100" value="{{ submission.score }}">
+        </div>
+        <div class="mb-3">
+            <label for="feedback" class="form-label">Feedback</label>
+            <textarea name="feedback" id="feedback" class="form-control" rows="4">{{ submission.feedback }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Grade</button>
+    </form>
+{% endblock %}

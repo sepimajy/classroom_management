@@ -1,0 +1,48 @@
+<!-- main/templates/main/classrooms/assignment_detail_teacher.html -->
+
+{% extends 'main/base.html' %}
+{% block title %}{{ assignment.title }} - Submissions{% endblock %}
+
+{% block content %}
+<h2>{{ assignment.title }} - Submissions</h2>
+<p>{{ assignment.description }}</p>
+<p><strong>Due Date:</strong> {{ assignment.due_date|date:"M d, Y H:i" }}</p>
+<p><strong>Allow Late Submissions:</strong> {{ assignment.allow_late_submission|yesno:"Yes,No" }}</p>
+
+{% if submissions %}
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Submitted At</th>
+                <th>Late</th>
+                <th>File</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission in submissions %}
+            <tr>
+                <td>{{ submission.student.username }}</td>
+                <td>{{ submission.submitted_at|date:"M d, Y H:i" }}</td>
+                <td>
+                    {% if submission.is_late %}
+                        <span class="badge bg-warning text-dark">Yes</span>
+                    {% else %}
+                        <span class="badge bg-success">No</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if submission.file %}
+                        <a href="{{ submission.file.url }}" target="_blank">Download</a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="mt-4">No submissions yet.</p>
+{% endif %}
+{% endblock %}

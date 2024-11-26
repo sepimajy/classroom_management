@@ -1,0 +1,144 @@
+/* main/static/main/css/styles.css */
+
+/* Global Styles */
+body {
+    background-color: #f0f2f5; /* Soft light gray */
+    color: #343a40; /* Dark gray text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffc107; /* Amber on hover */
+}
+
+/* Cards */
+.card {
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+.btn-close {
+    background-color: transparent;
+    border: none;
+}
+
+/* Form Controls */
+.form-control {
+    border-radius: 0.5rem;
+    box-shadow: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Tables */
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.table thead th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Accordion */
+.accordion-button {
+    background-color: #e9ecef;
+    color: #495057;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #0d6efd;
+    background-color: #dee2e6;
+}
+
+.accordion-button::after {
+    transition: transform 0.3s ease;
+}
+
+.accordion-button.collapsed::after {
+    transform: rotate(-180deg);
+}
+
+/* Images */
+img {
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}

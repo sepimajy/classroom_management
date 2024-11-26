@@ -1,0 +1,18 @@
+<!-- main/templates/main/classrooms/create_exam_step1.html -->
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Create Exam - Step 1{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2>Create New Exam - Step 1: Exam Details</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" name="next" class="btn btn-primary mt-3">Next</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
